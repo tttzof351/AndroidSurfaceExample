@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Surfaces</string>
+    <string name="record_start">Start record</string>
+    <string name="record_stop">Stop record</string>
+</resources>
