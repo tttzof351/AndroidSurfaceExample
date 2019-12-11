@@ -1,4 +1,4 @@
-package com.example.surfacemeetup
+package com.example.surfaces
 
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -8,10 +8,10 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.surfacemeetup.helpers.ContextHelper
-import com.example.surfacemeetup.helpers.OpenGLScene
-import com.example.surfacemeetup.helpers.PermissionHelper
-import com.example.surfacemeetup.machines.*
+import com.example.surfaces.helpers.ContextHelper
+import com.example.surfaces.helpers.OpenGLScene
+import com.example.surfaces.helpers.PermissionHelper
+import com.example.surfaces.machines.*
 
 
 class MainActivity : AppCompatActivity() {

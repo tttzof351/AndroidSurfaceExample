@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.machines
+package com.example.surfaces.machines
 
 import android.annotation.SuppressLint
 import android.graphics.SurfaceTexture
@@ -10,10 +10,10 @@ import android.os.Message
 import android.util.Size
 import android.view.Surface
 import android.widget.Toast
-import com.example.surfacemeetup.helpers.ContextHelper
-import com.example.surfacemeetup.helpers.OpenGLExternalTexture
-import com.example.surfacemeetup.helpers.OpenGLScene
-import com.example.surfacemeetup.utils.SimpleProducer
+import com.example.surfaces.helpers.ContextHelper
+import com.example.surfaces.helpers.OpenGLExternalTexture
+import com.example.surfaces.helpers.OpenGLScene
+import com.example.surfaces.utils.SimpleProducer
 import kotlin.math.abs
 
 class CameraMachine() : StateMachine<CameraState, CameraAction> {

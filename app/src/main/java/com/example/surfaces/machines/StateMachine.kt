@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.machines
+package com.example.surfaces.machines
 
 interface Action
 

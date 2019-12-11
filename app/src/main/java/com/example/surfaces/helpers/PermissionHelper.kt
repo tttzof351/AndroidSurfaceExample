@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.app.Activity
 import android.content.pm.PackageManager.PERMISSION_GRANTED

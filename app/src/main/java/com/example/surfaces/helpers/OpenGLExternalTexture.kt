@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.annotation.SuppressLint
 import android.graphics.SurfaceTexture
@@ -6,7 +6,7 @@ import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.Matrix
 import android.view.Surface
-import com.example.surfacemeetup.utils.ErrorUtils
+import com.example.surfaces.utils.ErrorUtils
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer

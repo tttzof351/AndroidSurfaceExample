@@ -1,17 +1,17 @@
-package com.example.surfacemeetup.machines
+package com.example.surfaces.machines
 
 import android.graphics.drawable.Drawable
 import android.opengl.GLSurfaceView
-import com.example.surfacemeetup.helpers.OpenGLScene
-import com.example.surfacemeetup.machines.GLSurfaceAction.*
-import com.example.surfacemeetup.machines.GLSurfaceState.*
-import com.example.surfacemeetup.utils.SimpleProducer
+import com.example.surfaces.helpers.OpenGLScene
+import com.example.surfaces.machines.GLSurfaceAction.*
+import com.example.surfaces.machines.GLSurfaceState.*
+import com.example.surfaces.utils.SimpleProducer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
 
-    override var state: GLSurfaceState = WaitCreate()
+    override var state: GLSurfaceState = WaitingCreate()
 
     val fullscreenProducer = SimpleProducer {
         val mh = this@GLSurfaceMachine.state.uiHolder
@@ -36,13 +36,13 @@ class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
     override fun transition(action: GLSurfaceAction) {
         val state = this.state
         when {
-            state is WaitCreate && action is Create -> {
+            state is WaitingCreate && action is Create -> {
                 val uiMutableHolder = setupGlSurface(state, action)
-                this.state = WaitSurfaceReady(uiMutableHolder)
+                this.state = WaitingSurfaceReady(uiMutableHolder)
 
                 this.state.uiHolder.glSurfaceView?.setRenderer(generateRender())
             }
-            state is WaitSurfaceReady && action is SurfaceReady -> {
+            state is WaitingSurfaceReady && action is SurfaceReady -> {
                 val nextMutableHolder = prepareOpenGLScene(state, action) ?: return
                 this.state = DrawingAvailable(nextMutableHolder)
             }
@@ -51,11 +51,11 @@ class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
                 drawFrame(state)
             }
 
-            state !is WaitCreate && action is Stop -> {
+            state !is WaitingCreate && action is Stop -> {
                 this.state = pauseGL(state)
             }
 
-            state is WaitSurfaceReady && action is Start -> {
+            state is WaitingSurfaceReady && action is Start -> {
                 resume(state)
             }
         }
@@ -65,11 +65,11 @@ class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
         state.uiHolder.glSurfaceView?.onResume()
     }
 
-    private fun pauseGL(state: GLSurfaceState): WaitSurfaceReady {
+    private fun pauseGL(state: GLSurfaceState): WaitingSurfaceReady {
         state.uiHolder.glSurfaceView?.onPause()
         state.uiHolder.openGLScene?.release()
 
-        return WaitSurfaceReady(
+        return WaitingSurfaceReady(
             state.uiHolder.copy(
                 openGLScene = null,
                 gl = null
@@ -78,7 +78,7 @@ class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
     }
 
     private fun setupGlSurface(
-        state: WaitCreate,
+        state: WaitingCreate,
         action: Create
     ): UIHolder {
         action.glSurfaceView.setEGLContextClientVersion(2)
@@ -106,7 +106,7 @@ class GLSurfaceMachine: StateMachine<GLSurfaceState, GLSurfaceAction> {
     }
 
     private fun prepareOpenGLScene(
-        state: WaitSurfaceReady,
+        state: WaitingSurfaceReady,
         action: SurfaceReady
     ): UIHolder? {
         val width = action.surfaceWidth
@@ -177,8 +177,8 @@ sealed class GLSurfaceAction : Action {
 }
 
 sealed class GLSurfaceState(val uiHolder: UIHolder) : State {
-    class WaitCreate() : GLSurfaceState(UIHolder())
-    class WaitSurfaceReady(uiHolder: UIHolder) : GLSurfaceState(uiHolder)
+    class WaitingCreate() : GLSurfaceState(UIHolder())
+    class WaitingSurfaceReady(uiHolder: UIHolder) : GLSurfaceState(uiHolder)
     class DrawingAvailable(uiHolder: UIHolder) : GLSurfaceState(uiHolder)
 }
 

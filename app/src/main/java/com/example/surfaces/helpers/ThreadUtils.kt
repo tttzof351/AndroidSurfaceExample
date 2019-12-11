@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.os.Handler
 import android.os.Looper

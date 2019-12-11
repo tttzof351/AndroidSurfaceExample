@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.grafika;
+package com.example.surfaces.grafika;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;

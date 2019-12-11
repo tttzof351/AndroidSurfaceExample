@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.machines
+package com.example.surfaces.machines
 
 import android.opengl.EGLContext
 import android.opengl.EGLSurface
@@ -7,19 +7,19 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
 import android.widget.Toast
-import com.example.surfacemeetup.grafika.EglCore
-import com.example.surfacemeetup.helpers.ContextHelper
-import com.example.surfacemeetup.helpers.EncoderHelper
-import com.example.surfacemeetup.helpers.OpenGLScene
-import com.example.surfacemeetup.helpers.ThreadUtils
-import com.example.surfacemeetup.machines.EncoderAction.*
-import com.example.surfacemeetup.machines.EncoderState.*
-import com.example.surfacemeetup.utils.SimpleProducer
+import com.example.surfaces.grafika.EglCore
+import com.example.surfaces.helpers.ContextHelper
+import com.example.surfaces.helpers.EncoderHelper
+import com.example.surfaces.helpers.OpenGLScene
+import com.example.surfaces.helpers.ThreadUtils
+import com.example.surfaces.machines.EncoderAction.*
+import com.example.surfaces.machines.EncoderState.*
+import com.example.surfaces.utils.SimpleProducer
 import java.io.File
 
 class EncoderMachine : StateMachine<EncoderState, EncoderAction> {
     @Volatile
-    override var state: EncoderState = WaitStartRecord()
+    override var state: EncoderState = WaitingStartRecord()
 
     private val handlerThread = HandlerThread("encoder handler thread")
     private val handler: Handler
@@ -51,28 +51,28 @@ class EncoderMachine : StateMachine<EncoderState, EncoderAction> {
         val state = this.state
 
         when {
-            state is WaitStartRecord && action is Start -> {
+            state is WaitingStartRecord && action is Start -> {
                 val mh = state.encoderHolder.copy(surfaceProducer = action.surfaceProducer)
-                this.state = WaitGLContext(mh)
+                this.state = WaitingGLContext(mh)
                 fetchContext(action)
             }
-            state is WaitGLContext && action is GLContextReady -> {
+            state is WaitingGLContext && action is GLContextReady -> {
                 val mh = prepareEncoder(state, action)
                 this.state = RecordAvailable(mh)
             }
             state is RecordAvailable && action is AddFrame -> {
                 addFrame(state)
             }
-            state !is WaitStartRecord && action is Stop -> {
+            state !is WaitingStartRecord && action is Stop -> {
                 stopRecord(state)
-                this.state = WaitStartRecord()
+                this.state = WaitingStartRecord()
             }
         }
 
         notifyChangeActiveState(state)
     }
 
-    fun isActive() = state !is WaitStartRecord
+    fun isActive() = state !is WaitingStartRecord
 
     private fun fetchContext(action: Start) {
         action.surfaceProducer.consume { triplet ->
@@ -88,7 +88,7 @@ class EncoderMachine : StateMachine<EncoderState, EncoderAction> {
     }
 
     private fun prepareEncoder(
-        state: WaitGLContext,
+        state: WaitingGLContext,
         action: GLContextReady
     ): EncoderHolder {
         val sharedContext = action.sharedEglContext
@@ -148,13 +148,13 @@ class EncoderMachine : StateMachine<EncoderState, EncoderAction> {
 
     private fun notifyChangeActiveState(oldState: State) {
         when {
-            oldState is WaitStartRecord && this.state !is WaitStartRecord -> {
+            oldState is WaitingStartRecord && this.state !is WaitingStartRecord -> {
                 ThreadUtils.runOnUI {
                     toggleRecordCallback?.invoke(true)
                 }
             }
 
-            oldState !is WaitStartRecord && this.state is WaitStartRecord -> {
+            oldState !is WaitingStartRecord && this.state is WaitingStartRecord -> {
                 ThreadUtils.runOnUI {
                     toggleRecordCallback?.invoke(false)
                 }
@@ -185,8 +185,8 @@ sealed class EncoderAction: Action {
 }
 
 sealed class EncoderState(val encoderHolder: EncoderHolder) : State {
-    class WaitStartRecord(): EncoderState(EncoderHolder())
-    class WaitGLContext(mh: EncoderHolder): EncoderState(mh)
+    class WaitingStartRecord(): EncoderState(EncoderHolder())
+    class WaitingGLContext(mh: EncoderHolder): EncoderState(mh)
     class RecordAvailable(mh: EncoderHolder): EncoderState(mh)
 }
 

@@ -1,8 +1,8 @@
-package com.example.surfacemeetup
+package com.example.surfaces
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import com.example.surfacemeetup.utils.TimeUtils
+import com.example.surfaces.utils.TimeUtils
 
 class CanvasDrawable : Drawable() {
     private var prevTimestamp = TimeUtils.now()

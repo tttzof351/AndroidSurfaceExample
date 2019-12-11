@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.utils
+package com.example.surfaces.utils
 
 class SimpleProducer<T : Any>(private val produceCallback: () -> T?) {
     private var consumeCallback: ((T) -> Unit)? = null

@@ -1,11 +1,11 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.media.MediaCodec
 import android.media.MediaCodecInfo
 import android.media.MediaFormat
 import android.media.MediaMuxer
 import android.view.Surface
-import com.example.surfacemeetup.utils.LogUtils.debug
+import com.example.surfaces.utils.LogUtils.debug
 import java.io.File
 import java.io.IOException
 import java.lang.IllegalStateException

@@ -1,10 +1,10 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.opengl.EGL14
 import android.opengl.GLES20
 import android.view.Surface
-import com.example.surfacemeetup.utils.ErrorUtils.checkGlError
-import com.example.surfacemeetup.utils.ShaderUtils
+import com.example.surfaces.utils.ErrorUtils.checkGlError
+import com.example.surfaces.utils.ShaderUtils
 
 class OpenGLScene(
     sceneWidth: Int,

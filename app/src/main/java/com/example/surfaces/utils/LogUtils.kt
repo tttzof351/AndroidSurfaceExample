@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.utils
+package com.example.surfaces.utils
 
 import android.util.Log
 

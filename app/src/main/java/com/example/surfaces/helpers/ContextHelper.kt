@@ -1,4 +1,4 @@
-package com.example.surfacemeetup.helpers
+package com.example.surfaces.helpers
 
 import android.content.Context
 import android.graphics.Point
