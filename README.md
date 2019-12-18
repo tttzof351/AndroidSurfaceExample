@@ -1,5 +1,5 @@
 # AndroidSurfaceExample
-Example of interaction android camera api v2, glsurafceview, mediacodec and surfaces.
+Example for post https://habr.com/ru/post/480878/ about of interaction android camera api v2, glsurafceview, mediacodec and surfaces.
 
 This sample of outputting  camera preview on screen with overlay custom drawable and capability record result video to file.
 For composition video. 
